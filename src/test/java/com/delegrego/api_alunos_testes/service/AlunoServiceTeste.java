@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -45,12 +46,33 @@ public class AlunoServiceTeste {
 
         //Assert
         Assertions.assertThat(alunoResponse).isNotNull();
-        Assertions.assertThat(alunoResponse.getId()).isEqualTo(1L);
         Assertions.assertThat(alunoResponse.getId()).isGreaterThan(0);
+        Assertions.assertThat(alunoResponse.getId()).isEqualTo(1L);
+    }
+    @Test
+    void deveRetornarListaAlunos(){
+
+        //Arrange
+        Aluno aluno1 = new Aluno(1L,"Lucas", "lucas.polastri@gmail.com","123", LocalDate.of(2003, 05, 13), 8);
+        Aluno aluno2 = new Aluno(2L,"Roberto", "roberto.betinho@gmail.com","321", LocalDate.of(1999, 07, 18), 7);
+
+
+        //Stub -> do findAll
+        Mockito.when(repository.findAll()).thenReturn(List.of(aluno1, aluno2));
+
+
+        //Act
+        List<AlunoResponse> alunos = service.listarAlunos();
+
+
+        //Assert
+        Assertions.assertThat(alunos).isNotNull();
+        Assertions.assertThat(alunos).hasSize(2);
 
     }
+    // Tarefa de casa fazer os outros testes o Delete e Update
+    // Fazer formulario sobre conhecimentos de front-end
 
-    
 
 
 
