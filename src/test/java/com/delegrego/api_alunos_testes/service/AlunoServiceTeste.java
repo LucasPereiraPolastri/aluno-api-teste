@@ -48,6 +48,10 @@ public class AlunoServiceTeste {
         Assertions.assertThat(alunoResponse).isNotNull();
         Assertions.assertThat(alunoResponse.getId()).isGreaterThan(0);
         Assertions.assertThat(alunoResponse.getId()).isEqualTo(1L);
+        Assertions.assertThat(alunoResponse.getNome()).isEqualTo("Lucas");
+        Assertions.assertThat(alunoResponse.getEmail()).isEqualTo("lucas.polastri@gmail.com");
+        Assertions.assertThat(alunoResponse.getMedia()).isEqualTo(8);
+        Assertions.assertThat(alunoResponse.getDataNascimento()).isEqualTo(LocalDate.of(2003, 5, 13));
     }
     @Test
     void deveRetornarListaAlunos(){
@@ -68,6 +72,12 @@ public class AlunoServiceTeste {
         //Assert
         Assertions.assertThat(alunos).isNotNull();
         Assertions.assertThat(alunos).hasSize(2);
+        Assertions.assertThat(alunos.get(0).getId()).isEqualTo(1L);
+        Assertions.assertThat(alunos.get(0).getNome()).isEqualTo("Lucas");
+        Assertions.assertThat(alunos.get(0).getEmail()).isEqualTo("lucas.polastri@gmail.com");
+        Assertions.assertThat(alunos.get(1).getId()).isEqualTo(2L);
+        Assertions.assertThat(alunos.get(1).getNome()).isEqualTo("Roberto");
+        Assertions.assertThat(alunos.get(1).getEmail()).isEqualTo("roberto.betinho@gmail.com");
 
     }
     // Tarefa de casa fazer os outros testes o Delete e Update
@@ -110,6 +120,7 @@ public class AlunoServiceTeste {
         Assertions.assertThat(response.getNome()).isEqualTo("Carlos Atualizado");
         Assertions.assertThat(response.getEmail()).isEqualTo("carlos.novo@gmail.com");
         Assertions.assertThat(response.getMedia()).isEqualTo(9);
+        Assertions.assertThat(response.getDataNascimento()).isEqualTo(LocalDate.of(2003, 5, 13));
     }
     @Test
     void deveExcluirAluno() {
@@ -124,6 +135,7 @@ public class AlunoServiceTeste {
 
         // Assert
         Mockito.verify(repository).deleteById(aluno1.getId());
+        Mockito.verify(repository, Mockito.times(1)).deleteById(1L);
     }
 
 
