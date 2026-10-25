@@ -74,6 +74,58 @@ public class AlunoServiceTeste {
     // Fazer formulario sobre conhecimentos de front-end
 
 
+    @Test
+    void deveAtualizarAluno() {
+
+        // Arrange
+        Aluno aluno1 = new Aluno(1L, "Carlos",
+                "Carlos.alberto@gmail.com", "123",
+                LocalDate.of(2003, 5, 13), 8);
+
+        AlunoRequest request = new AlunoRequest(
+                "Carlos Atualizado",
+                "carlos.novo@gmail.com",
+                "456",
+                LocalDate.of(2003, 5, 13),
+                9
+        );
+
+        // Stub
+        Mockito.when(repository.findById(1L))
+                .thenReturn(java.util.Optional.of(aluno1));
+
+        Mockito.when(repository.existsByEmailIgnoreCaseAndIdNot(
+                        request.getEmail(), 1L))
+                .thenReturn(false);
+
+        Mockito.when(repository.save(Mockito.any(Aluno.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Act
+        AlunoResponse response = service.atualizarAluno(1L, request);
+
+        // Assert
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.getId()).isEqualTo(1L);
+        Assertions.assertThat(response.getNome()).isEqualTo("Carlos Atualizado");
+        Assertions.assertThat(response.getEmail()).isEqualTo("carlos.novo@gmail.com");
+        Assertions.assertThat(response.getMedia()).isEqualTo(9);
+    }
+    @Test
+    void deveExcluirAluno() {
+
+        // Arrange
+        Aluno aluno1 = new Aluno(1L, "Carlos",
+                "Carlos.alberto@gmail.com", "123",
+                LocalDate.of(2003, 5, 13), 8);
+
+        // Act
+        service.excluirAluno(aluno1.getId());
+
+        // Assert
+        Mockito.verify(repository).deleteById(aluno1.getId());
+    }
+
 
 
 }
